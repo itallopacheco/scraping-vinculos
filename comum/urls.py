@@ -11,6 +11,8 @@ urlpatterns = [
     path('', include(router.urls)),
     path('vinculos/buscar_vinculos/', VinculoViewSet.as_view({'get': 'buscar_vinculos'}),
          name='buscar_vinculos'),
+    path('vinculos/buscar_especialidade/', VinculoViewSet.as_view({'get': 'buscar_especialidade'}),
+         name='buscar_especialidade')
 ]
 
 urlpatterns += router.urls

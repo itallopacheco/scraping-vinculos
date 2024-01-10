@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Profissional, Vinculo
+from comum.models import Profissional, Vinculo
 
 
 class ProfissionalSerializer(serializers.ModelSerializer):

@@ -30,3 +30,15 @@ class VinculoViewSet(viewsets.ModelViewSet):
         vinculos = Vinculo.objects.filter(profissional__cpf=cpf)
         serializer = VinculoSerializer(vinculos, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['get'])
+    def buscar_especialidade(self, request):
+        cpf = request.query_params.get('cpf')
+        competencia = request.query_params.get('competencia')
+        cnes = request.query_params.get('cnes')
+
+        buscar_vinculos(cpf)
+        vinculos = Vinculo.objects.filter(profissional__cpf=cpf,competencia=competencia,cnes=cnes)
+        serializer = VinculoSerializer(vinculos, many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
