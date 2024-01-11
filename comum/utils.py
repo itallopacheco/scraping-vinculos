@@ -4,6 +4,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
@@ -12,6 +14,14 @@ from .models import Profissional, Vinculo
 from django.db import transaction
 
 warnings.filterwarnings("ignore", category=FutureWarning)
+
+options = Options()
+options.add_argument("--no-sandbox")
+options.add_argument("--headless")
+options.add_argument("--disable-dev-shm-usage")
+
+driver_1 = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options, )
+driver_2 = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options, )
 
 def competencia_atual():
     data_atual = datetime.now()
@@ -120,10 +130,7 @@ def buscar_historico_vinculos(driver, profissional):
 
 
 def buscar_vinculos(cpf):
-    options = Options()
-    options.add_argument("--headless")
-    driver_1 = webdriver.Chrome(options=options,)
-    driver_2 = webdriver.Chrome(options=options,)
+
     profissional, created = Profissional.objects.get_or_create(cpf=cpf)
     try:
         driver_1.get('https://cnes.datasus.gov.br/pages/profissionais/consulta.jsp')
