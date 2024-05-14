@@ -129,3 +129,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SELENIUM_OPTIONS = {
+    'REMOTE_SELENIUM_ADDRESS': 'host.docker.internal:4444',
+    'SELENIUM_REQUESTS_PROXY_HOST': '192.168.101.2'
+}

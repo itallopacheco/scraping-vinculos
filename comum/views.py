@@ -7,6 +7,7 @@ from comum.serializers import ProfissionalSerializer, VinculoSerializer
 from comum.models import Profissional, Vinculo
 from comum.utils import buscar_vinculos
 
+import time
 
 class ProfissionalViewSet(viewsets.ModelViewSet):
     queryset = Profissional.objects.all()
@@ -25,11 +26,11 @@ class VinculoViewSet(viewsets.ModelViewSet):
     def buscar_vinculos(self, request):
         cpf = request.query_params.get('cpf')
 
-        # Chama a função buscar_vinculos e obtém o resultado
+        start_time = time.time()
         buscar_vinculos(cpf)
-        vinculos = Vinculo.objects.filter(profissional__cpf=cpf)
-        serializer = VinculoSerializer(vinculos, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        elapsed_time = time.time() - start_time
+        print(f"Tempo: {elapsed_time}")
+        return Response(data={'tempo': elapsed_time}, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['get'])
     def buscar_especialidade(self, request):
@@ -37,8 +38,9 @@ class VinculoViewSet(viewsets.ModelViewSet):
         competencia = request.query_params.get('competencia')
         cnes = request.query_params.get('cnes')
 
-        buscar_vinculos(cpf)
         vinculos = Vinculo.objects.filter(profissional__cpf=cpf,competencia=competencia,cnes=cnes)
+        if not vinculos.exists():
+            return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = VinculoSerializer(vinculos, many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
 

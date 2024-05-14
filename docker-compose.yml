@@ -2,7 +2,7 @@ version: '3'
 
 services:
   api:
-    image: vinculos_servicie:0.3
+    build: .
     volumes:
       - .:/app
     ports:
